@@ -37,8 +37,8 @@ the auto-lock.
 | `tests/static.sh` | 26 | local + CI |
 | `tests/smoke.sh` | 47 | local + CI |
 | `tests/persistence.sh` | 21 | local + CI |
-| `tests/railway-smoke.sh` (fresh) | see RAILWAY_TEMPLATE.md | live HTTPS deploy of the template |
-| `tests/railway-smoke.sh --verify` | see RAILWAY_TEMPLATE.md | after a redeploy |
+| `tests/railway-smoke.sh` (fresh) | 29 | live HTTPS deploy of the template (2026-10-23) |
+| `tests/railway-smoke.sh --verify` | 22 | same deploy after a redeploy |
 
 Product flows exercised through the real protocol (Ed25519 device keys, no mocks): account creation, sign-up lock,
 refused second account, sign-in, sessions, encrypted messages, KV store, Socket.IO over WebSocket, terminal pairing.
@@ -50,3 +50,6 @@ None required.
 ## Verdict
 
 Shippable with a wrapper image (stock app unmodified).
+
+Manual check on a live deploy: sign-up through the bundled web app (with `SIGNUP_ACCOUNT_LIMIT=2`, second slot),
+the lock restart (about 8 s of 502s), and the web app recovering on its own with every API call returning 200.

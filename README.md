@@ -27,12 +27,14 @@ Happier logo.
    the secret key the app shows you. About 10 seconds later the server restarts with sign-up closed.
 3. Phone or desktop app: add the server (Settings → Server, URL `https://<your domain>`), then restore or link your
    account (Add your phone / scan the QR code from the web app).
-4. Each computer that runs agents:
+4. Each computer that runs agents: install the CLI (`curl -fsSL https://happier.dev/install | bash`), then
 
    ```bash
-   happier server add --name railway --server-url https://<your domain> --webapp-url https://<your domain> --use
-   happier auth login
+   happier setup --relay https://<your domain>
    ```
+
+   and approve the sign-in from the app. (The web app bundled in the relay image suggests dev-channel commands such as
+   `hdev setup` and `--channel dev`; the stable `happier` commands above work the same way.)
 
 If someone else created the first account before you (sign-up said "disabled"), delete the volume's data
 (redeploy with a new volume) and start again.

@@ -18,7 +18,8 @@
 - **Back up your secret key.** Accounts have no password; losing every device and the secret key loses the account.
 - **Short double-sign-up window.** Accounts are counted every 2 seconds, so two sign-ups within the same 2 seconds
   could both succeed. Check the logs for `account limit reached (N of 1)`.
-- **Rate limits** are upstream's defaults (per client IP behind Railway's edge).
+- **Rate limits** are upstream's defaults, keyed per client IP: the template trusts forwarded headers only from
+  Railway's edge range (`100.64.0.0/10`).
 - **Back up the volume** (`/data`): it holds the database, uploaded files and the master secret.
 
 ## Reporting

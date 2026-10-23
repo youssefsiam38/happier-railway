@@ -68,9 +68,19 @@ async function login(id) {
     return r.token;
 }
 
+// The template's sign-up lock restarts the server right after the first account is created, so retry briefly
+// across that gap (connection errors and 5xx) instead of reporting it as a failed read.
 async function profileId(token) {
-    const r = await api("GET", "/v1/account/profile", { token });
-    return { status: r.status, id: r.json?.id ?? null };
+    const deadline = Date.now() + 60000;
+    for (;;) {
+        try {
+            const r = await api("GET", "/v1/account/profile", { token });
+            if (r.status < 500 || Date.now() > deadline) return { status: r.status, id: r.json?.id ?? null };
+        } catch (error) {
+            if (Date.now() > deadline) throw error;
+        }
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+    }
 }
 
 const commands = {

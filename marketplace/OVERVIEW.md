@@ -37,14 +37,13 @@ your account.
 
 **First steps:** right after the deploy turns green, open your service's domain and create your account in the web
 app; back up the secret key it shows. Sign-up closes about 10 seconds later. In the Happier phone or desktop app, add
-the server (`https://<your domain>`) and link your account. On each computer:
-`happier server add --name railway --server-url https://<your domain> --webapp-url https://<your domain> --use`,
-then `happier auth login`.
+the server (`https://<your domain>`) and link your account. On each computer, install the Happier CLI and run
+`happier setup --relay https://<your domain>`.
 
 **What's configured for you:** the official `happierdev/relay-server` image pinned by digest and used unmodified,
 plus a start script that fixes the volume's ownership for the non-root server and enforces the sign-up limit
 (`SIGNUP_ACCOUNT_LIMIT`, default 1); the public URL set from your Railway domain for QR codes and deep links; a
-generated token secret; data on a volume at `/data`; a health check on `/health`; upstream crash reporting off.
+generated token secret; Railway's edge trusted for client IPs so rate limits apply per client; data on a volume at `/data`; a health check on `/health`; upstream crash reporting off.
 
 **More people:** raise `SIGNUP_ACCOUNT_LIMIT` and redeploy; sign-up reopens until that many accounts exist.
 
