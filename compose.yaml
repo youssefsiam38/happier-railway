@@ -1,0 +1,27 @@
+# Local test topology. Mirrors the Railway service graph: one service, one volume at /data.
+#   happier -> Happier relay server + web UI (wrapper image: sign-up lock, volume ownership), public on :3005
+name: happier-railway-test
+
+services:
+  happier:
+    build:
+      context: .
+      dockerfile: images/happier/Dockerfile
+      args:
+        WRAPPER_VERSION: ${WRAPPER_VERSION:-0.0.0-local}
+        VCS_REF: ${VCS_REF:-local}
+    image: ${HAPPIER_RAILWAY_IMAGE:-happier-railway:local}
+    restart: unless-stopped
+    environment:
+      PORT: '3005'
+      HANDY_MASTER_SECRET: ${HAPPIER_TEST_MASTER_SECRET:-local-test-only-master-secret}
+      HAPPIER_PUBLIC_SERVER_URL: http://127.0.0.1:${HAPPIER_TEST_PORT:-13105}
+      HAPPIER_WEBAPP_URL: http://127.0.0.1:${HAPPIER_TEST_PORT:-13105}
+      SIGNUP_ACCOUNT_LIMIT: ${HAPPIER_TEST_SIGNUP_LIMIT:-1}
+    ports:
+      - '127.0.0.1:${HAPPIER_TEST_PORT:-13105}:3005'
+    volumes:
+      - data:/data
+
+volumes:
+  data:
